@@ -9,25 +9,19 @@ import {placesActions} from "../../redux/actions/places.actions"
 
 
 function Landing(props) {
-    const [places, setPlaces] = useState([]);
+    const [places, setPlaces] = useState([...props.places]);
 
     useEffect(() => {
-        console.log('props', props)
         props.getPlaces()
-        setPlaces(props.places)
     }, []);
 
     useEffect(() => {
-        console.log('places in state', places)
-    }, [places]);
-
-    console.log('places in state render', places)
-
+        if (props.places.length > 0 || props.places.length !== places.length) setPlaces(props.places)
+    }, [props.places]);
 
     return (
         <Row className={styles.landingPage}>
-            <Col span={6} className={styles.searchPanel}>search panel bar
-            </Col>
+            <Col span={6} className={styles.searchPanel}>search panel bar{JSON.stringify(places)}</Col>
             <Col span={18} className={styles.mapView}><MapView/></Col>
         </Row>
     )
