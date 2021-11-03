@@ -1,20 +1,20 @@
-import * as t from "../types";
+import * as t from '../types';
 
-const placesReducer = (state = {places: []}, action) => {
-  switch(action.type){
+const placesReducer = (state = { places: null }, action) => {
+  switch (action.type) {
     case t.GET_PLACES_SUCCESS:
-      return { 
+      return {
         ...state,
-        places: action.payload
+        places: action.payload,
       };
-      case t.GET_PLACES_FAILURE:
-        return { 
-          ...state,
-          places: action.payload
-        };
+    case t.GET_PLACES_FAILURE:
+      return {
+        ...state,
+        places: action.payload,
+      };
     default:
-      return {...state};
-    }
-}
+      return { ...state };
+  }
+};
 
 export default placesReducer;

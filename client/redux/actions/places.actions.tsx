@@ -1,18 +1,12 @@
-import * as t from "../types";
-import {placesServices} from '../services/places.services'
+import * as t from '../types';
+import { placesServices } from '../services/places.services';
 
-
-
-function getPlaces(name){
-  console.log('getPlaces')
-  return(dispatch) =>{
-    placesServices.getPlaces().then(
-      (response) => {
-        dispatch(success(response));
-      }
-    )
-
-  }
+function getPlaces() {
+  return (dispatch) => {
+    placesServices.getPlaces().then((response) => {
+      dispatch(success(response));
+    });
+  };
 
   function success(payload) {
     return { type: t.GET_PLACES_SUCCESS, payload };
@@ -23,7 +17,6 @@ function getPlaces(name){
   }
 }
 
-
 export const placesActions = {
-  getPlaces
-}
+  getPlaces,
+};
