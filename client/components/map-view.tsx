@@ -1,5 +1,7 @@
 import React from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import placesReducer from '../redux/reducers/places.reducer';
+import { connect } from 'react-redux';
 
 const containerStyle = {
   width: '100%',
@@ -7,11 +9,11 @@ const containerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: 37.772,
+  lng: -122.214,
 };
 
-function MapView() {
+function MapView(props) {
   console.log('map view render');
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -21,8 +23,8 @@ function MapView() {
   const [map, setMap] = React.useState(null);
 
   const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);
+    map.setCenter(center);
+    console.log(map);
     setMap(map);
   }, []);
 
@@ -30,20 +32,34 @@ function MapView() {
     setMap(null);
   }, []);
 
+  const position = {
+    lat: 37.772,
+    lng: -122.214,
+  };
+
+  const { places } = props;
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={10}
+      zoom={5}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-      {/* Child components, such as markers, info windows, etc. */}
-      <></>
+      {places &&
+        places.map((place) => {
+          return <Marker position={{ lat: place.lat, lng: place.lng }} />;
+        })}
     </GoogleMap>
-  ) : (
-    <></>
-  );
+  ) : null;
 }
 
-export default React.memo(MapView);
+const mapStateToProps = (state) => {
+  const { placesReducer } = state;
+
+  return {
+    places: placesReducer.places,
+  };
+};
+
+export default connect(mapStateToProps, null)(React.memo(MapView));
